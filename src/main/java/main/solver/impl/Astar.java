@@ -1,59 +1,63 @@
 package main.solver.impl;
 
-import main.solver.State;
+import main.solver.AStarNode;
+import main.solver.DistanceHeuristic;
 
 import java.util.*;
 
 public class Astar {
-    public List<Node> solve (EuclideanGraph graph) {
-        List<Node> path = Collections.emptyList();
-        TreeSet<Node> openSet = new TreeSet<>();
-        Set<Node> closedSet = new HashSet<>();
-        Node startNode = GraphHelper.findStartNode(graph);
-        Node goalNode = GraphHelper.findGoalNode(graph);
-        startNode.setIncrementalCost(0);
-        startNode.setHeuristicCost(GraphHelper.getHeuristicCost(startNode, goalNode));
-        openSet.add(startNode);
 
-        while (!openSet.isEmpty()) {
-            Node current = openSet.first();
-            if (current.getState().equals(State.GOAL)) {
-                path = reconstructPath(goalNode);
+    private final DistanceHeuristic<AStarNode> heuristic;
+    private final EuclideanGraph graph;
+    private final NodeData start;
+    private final NodeData goal;
+
+    public Astar (EuclideanGraph graph, DistanceHeuristic<AStarNode> heuristic, NodeData startNode, NodeData goalNode) {
+        this.graph = graph;
+        this.heuristic = heuristic;
+        this.start = startNode;
+        this.goal = goalNode;
+    }
+
+    public List<AStarNode> solve() {
+        List<AStarNode> path = Collections.emptyList();
+        Queue<AStarNode> unexploredNodes = new PriorityQueue<>();
+        List<AStarNode> exploredNodes = new ArrayList<>();
+        AStarNode startNode = graph.getNodeAtPosition(start.getXCoordinate(), start.getYCoordinate());
+        AStarNode goalNode = graph.getNodeAtPosition(goal.getXCoordinate(), goal.getYCoordinate());
+        startNode.setIncrementalCost(0);
+        startNode.setHeuristicCost(heuristic.getDistance(startNode, goalNode));
+        unexploredNodes.add(startNode);
+        while (!unexploredNodes.isEmpty()) {
+            AStarNode current = unexploredNodes.poll();
+            if (current == goalNode) {
+                return reconstructPath(current);
             }
-            openSet.remove(current);
-            closedSet.add(current);
-            for (Node neighbor : current.getNeighbors()) {
-                if (!closedSet.contains(neighbor)) {
-                    neighbor.setIncrementalCost(GraphHelper.getCostToNeighborNode(current, neighbor));
+            for (AStarNode neighbor : current.getValidNeighbors()) {
+                double successorCost = current.getIncrementalCost() + GraphHelper.getCostToNeighborNode(current, neighbor);
+                if (!((unexploredNodes.contains(neighbor) || exploredNodes.contains(neighbor)) && neighbor.getIncrementalCost() < successorCost)) {
                     neighbor.setParentNode(current);
-                    neighbor.setHeuristicCost(GraphHelper.getHeuristicCost(current, goalNode));
-                    if (!openSet.contains(neighbor)) {
-                        openSet.add(neighbor);
-                    } else {
-                        Set<Node> openSetCcpy = new HashSet<>(openSet);
-                        Set<Node> neighbors = new HashSet<>(current.getNeighbors());
-                        openSetCcpy.retainAll(neighbors);
-                        for (Node openNeighbor : openSetCcpy) {
-                            if (neighbor.getIncrementalCost() <= openNeighbor.getIncrementalCost()) {
-                                openNeighbor.setIncrementalCost(neighbor.getIncrementalCost());
-                                openNeighbor.setParentNode(neighbor.getParent());
-                            }
-                        }
+                    neighbor.setIncrementalCost(successorCost);
+                    neighbor.setHeuristicCost(heuristic.getDistance(neighbor, goalNode));
+                    if (exploredNodes.contains(neighbor)) {
+                        exploredNodes.remove(neighbor);
+                    }
+                    if (!unexploredNodes.contains(neighbor)) {
+                        unexploredNodes.add(neighbor);
                     }
                 }
             }
+            exploredNodes.add(current);
         }
         return path;
     }
 
-    private List<Node> reconstructPath(Node node) {
-        List<Node> path = new ArrayList<>();
+    private List<AStarNode> reconstructPath(AStarNode node) {
+        List<AStarNode> path = new ArrayList<>();
         while (node.getParent() != null) {
             path.add(node);
             node = node.getParent();
         }
         return path;
     }
-
-
 }

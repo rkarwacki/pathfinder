@@ -1,10 +1,12 @@
 package main.ui;
 
 import javafx.scene.layout.Pane;
-import main.solver.impl.Node;
+import main.solver.AStarNode;
+import main.solver.impl.AStarNodeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Grid extends Pane {
 
@@ -57,6 +59,12 @@ public class Grid extends Pane {
         return cells;
     }
 
+    private List<Cell> flatCellsList() {
+        return cells.stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
     public int getRows() {
         return rows;
     }
@@ -69,8 +77,12 @@ public class Grid extends Pane {
         cells.forEach(list -> list.forEach(Cell::unhighlight));
     }
 
-    public void setPath(List<Node> path) {
-        for (Node node : path) {
+    public void removePath() {
+        flatCellsList().stream().forEach(Cell::unsetAsPathPart);
+    }
+
+    public void setPath(List<AStarNode> path) {
+        for (AStarNode node : path) {
             getCell(node.getXCoordinate(), node.getYCoordinate()).setAsPathPart();
         }
     }

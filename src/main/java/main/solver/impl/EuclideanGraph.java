@@ -1,5 +1,6 @@
 package main.solver.impl;
 
+import main.solver.AStarNode;
 import main.ui.Cell;
 import main.ui.Grid;
 
@@ -11,9 +12,17 @@ public class EuclideanGraph {
 
     private final int xSize;
     private final int ySize;
-    private List<List<Node>> nodes = new ArrayList<>();
+    private final List<List<AStarNodeImpl>> nodes;
+
+    public EuclideanGraph(List<List<AStarNodeImpl>> nodes){
+        this.xSize = nodes.size();
+        this.ySize = nodes.get(0).size();
+        this.nodes = nodes;
+        setNodesNeighbors();
+    }
 
     public EuclideanGraph(Grid grid) {
+        nodes = new ArrayList<>();
         this.xSize = grid.getColumns();
         this.ySize = grid.getRows();
         createGraph(grid);
@@ -23,14 +32,14 @@ public class EuclideanGraph {
     private void setNodesNeighbors() {
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                Node currentNode = getNodeAtPosition(i, j);
+                AStarNodeImpl currentNode = getNodeAtPosition(i, j);
                 currentNode.setNeighbors(findNodeNeighbors(i, j));
             }
         }
     }
 
-    private List<Node> findNodeNeighbors(int i, int j) {
-        List<Node> neighbors = new ArrayList<>();
+    private List<AStarNode> findNodeNeighbors(int i, int j) {
+        List<AStarNode> neighbors = new ArrayList<>();
         for (int k = -1; k <= 1; k++) {
             for (int l = -1; l <= 1; l++) {
                 if (isNotCurrentNode(k, l) && isWithinGraphBounds(i, j, k, l)) {
@@ -54,16 +63,16 @@ public class EuclideanGraph {
         for (int i = 0; i < xSize; i++) {
             nodes.add(i, new ArrayList<>());
             for (int j = 0; j < ySize; j++) {
-                nodes.get(i).add(j, new Node(cells.get(i).get(j)));
+                nodes.get(i).add(j, new AStarNodeImpl(cells.get(i).get(j)));
             }
         }
     }
 
-    public Node getNodeAtPosition(int x, int y) {
+    public AStarNodeImpl getNodeAtPosition(int x, int y) {
         return nodes.get(x).get(y);
     }
 
-    public List<Node> getAllNodes() {
+    public List<AStarNodeImpl> getAllNodes() {
         return nodes.stream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());

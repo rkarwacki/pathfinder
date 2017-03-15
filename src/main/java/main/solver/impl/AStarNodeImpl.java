@@ -6,28 +6,28 @@ import main.solver.State;
 import main.ui.Cell;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Node implements AStarNode, NodeNeighborhoodAware, Comparable<Node> {
+public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparable<AStarNode> {
 
     private final int x;
     private final int y;
     private final State state;
-    private List<Node> neighbors;
+    private List<AStarNode> neighbors;
     private double incrementalCost;
     private double heuristicCost;
+    private AStarNode parentNode;
 
-    public void setParentNode(Node parentNode) {
+    public void setParentNode(AStarNode parentNode) {
         this.parentNode = parentNode;
     }
 
-    private Node parentNode;
-
-    public Node(Cell cell) {
+    public AStarNodeImpl(Cell cell) {
         this(cell.getColumn(), cell.getRow(),
                 getState(cell));
     }
 
-    public Node(int x, int y, State state) {
+    public AStarNodeImpl(int x, int y, State state) {
         this.x = x;
         this.y = y;
         this.state = state;
@@ -37,10 +37,6 @@ public class Node implements AStarNode, NodeNeighborhoodAware, Comparable<Node> 
         State state = State.OPEN;
         if (cell.isHighlighted()) {
             state = State.BLOCKED;
-        } else if (cell.isGoal()) {
-            state = State.GOAL;
-        } else if (cell.isStart()) {
-            state = State.START;
         }
         return state;
     }
@@ -57,8 +53,7 @@ public class Node implements AStarNode, NodeNeighborhoodAware, Comparable<Node> 
 
     @Override
     public double getIncrementalCost() {
-        if (parentNode == null) return 0;
-        return parentNode.getIncrementalCost() + GraphHelper.getCostToNeighborNode(this, parentNode);
+        return incrementalCost;
     }
 
     @Override
@@ -72,20 +67,22 @@ public class Node implements AStarNode, NodeNeighborhoodAware, Comparable<Node> 
     }
 
     @Override
-    public Node getParent() {
+    public AStarNode getParent() {
         return parentNode;
     }
 
     @Override
-    public List<Node> getNeighbors() {
-        return neighbors;
+    public List<AStarNode> getValidNeighbors() {
+        return neighbors.stream()
+                .filter(node -> !node.getState().equals(State.BLOCKED))
+                .collect(Collectors.toList());
     }
 
     public State getState() {
         return state;
     }
 
-    public void setNeighbors(List<Node> neighbors) {
+    public void setNeighbors(List<AStarNode> neighbors) {
         this.neighbors = neighbors;
     }
 
@@ -98,7 +95,7 @@ public class Node implements AStarNode, NodeNeighborhoodAware, Comparable<Node> 
     }
 
     @Override
-    public int compareTo(Node o) {
+    public int compareTo(AStarNode o) {
         if (this.getTotalCost() > o.getTotalCost()) {
             return 1;
         } else if (this.getTotalCost() < o.getTotalCost()) {

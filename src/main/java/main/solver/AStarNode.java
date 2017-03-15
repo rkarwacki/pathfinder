@@ -1,10 +1,20 @@
 package main.solver;
 
-import main.solver.impl.Node;
+import java.util.List;
 
-public interface AStarNode extends Point<Integer> {
+public interface AStarNode extends Point<Integer>, Comparable<AStarNode> {
     double getIncrementalCost();
     double getHeuristicCost();
     double getTotalCost();
-    Node getParent();
+    AStarNode getParent();
+
+    void setIncrementalCost(double value);
+
+    void setHeuristicCost(double distance);
+
+    List<AStarNode> getValidNeighbors();
+
+    void setParentNode(AStarNode current);
+
+    State getState();
 }

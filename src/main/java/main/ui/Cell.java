@@ -91,4 +91,8 @@ public class Cell extends StackPane {
     public void setAsPathPart() {
         getStyleClass().add("cell-path");
     }
+
+    public void unsetAsPathPart() {
+        getStyleClass().remove("cell-path");
+    }
 }
