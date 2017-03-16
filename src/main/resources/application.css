@@ -6,7 +6,7 @@
     -fx-background-color:derive(#b2b3b3,4%);
 }
 .cell-hover-highlight {
-    -fx-background-color:derive(#b2b3b3,4%);
+    -fx-background-color:derive(#b1b3a7,4%);
 }
 .cell-start {
     -fx-background-color:derive(#24b30d,4%);
@@ -15,10 +15,14 @@
     -fx-background-color:derive(#1b1cb3,4%);
 }
 .cell-visited {
-    -fx-background-color:derive(#ba896e,4%);
+    -fx-background-color:derive(#aaffbb,4%);
 }
 
 .cell-path {
     /*-fx-background-color:derive(#b30500,4%);*/
     -fx-border-width: 2px;
+}
+
+.default {
+
 }

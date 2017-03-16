@@ -51,6 +51,8 @@ public class Cell extends StackPane {
     }
 
     public void highlight() {
+        unsetAsPathPart();
+        unsetAsVisitedNode();
         getStyleClass().remove("cell-highlight");
         getStyleClass().add("cell-highlight");
         isHighlighted = true;
