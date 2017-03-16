@@ -15,7 +15,7 @@
     -fx-background-color:derive(#1b1cb3,4%);
 }
 .cell-visited {
-    -fx-background-color:derive(#7a95b3,4%);
+    -fx-background-color:derive(#ba896e,4%);
 }
 
 .cell-path {

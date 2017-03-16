@@ -17,6 +17,7 @@ public class Grid extends Pane {
     private double height;
 
     private List<List<Cell>> cells  = new ArrayList<>();
+    private List<AStarNode> visitedNodes;
 
     public Grid(int columns, int rows, double width, double height) {
         this.columns = columns;
@@ -78,12 +79,22 @@ public class Grid extends Pane {
     }
 
     public void removePath() {
-        flatCellsList().stream().forEach(Cell::unsetAsPathPart);
+        flatCellsList().forEach(Cell::unsetAsPathPart);
     }
 
     public void setPath(List<AStarNode> path) {
         for (AStarNode node : path) {
             getCell(node.getXCoordinate(), node.getYCoordinate()).setAsPathPart();
         }
+    }
+
+    public void setVisitedNodes(List<AStarNode> visitedNodes) {
+        for (AStarNode node : visitedNodes) {
+            getCell(node.getXCoordinate(), node.getYCoordinate()).setAsVisitedNode();
+        }
+    }
+
+    public void removeVisited() {
+        flatCellsList().forEach(Cell::unsetAsVisitedNode);
     }
 }

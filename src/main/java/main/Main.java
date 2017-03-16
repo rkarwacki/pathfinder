@@ -18,10 +18,18 @@ public class Main extends Application {
 
     boolean showHoverCursor = true;
 
-    private int columns = 100;
-    private int rows = 100;
-    private double width = 900;
-    private double height = 900;
+    private static final int COLUMNS = 100;
+    private static final int ROWS = 100;
+    private static final double WINDOW_WIDTH = 900;
+    private static final double WINDOW_HEIGHT = 900;
+
+    private static final int START_NODE_X = 23;
+    private static final int START_NODE_Y = 54;
+    private static final int GOAL_NODE_X = 83;
+    private static final int GOAL_NODE_Y = 87;
+
+    private static final boolean SHOW_EXPLORED_NODES = true;
+
     private Grid grid;
 
     @Override
@@ -30,29 +38,28 @@ public class Main extends Application {
         try {
             Button button = new Button();
             button.setText("start");
-            grid = new Grid(columns, rows, width, height);
+            grid = new Grid(COLUMNS, ROWS, WINDOW_WIDTH, WINDOW_HEIGHT);
             makeGridPaintable(grid, mg);
             StackPane root = new StackPane();
             root.getChildren().addAll(grid);
             root.getChildren().addAll(button);
-            int startNodeX = 23;
-            int startNodeY = 54;
-            int goalNodeX = 83;
-            int goalNodeY = 87;
-
-            grid.getCell(startNodeX, startNodeY).setAsStart();
-            grid.getCell(goalNodeX,goalNodeY).setAsGoal();
-            Scene scene = new Scene(root, width, height);
+            grid.getCell(START_NODE_X, START_NODE_Y).setAsStart();
+            grid.getCell(GOAL_NODE_X, GOAL_NODE_Y).setAsGoal();
+            Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
 
             button.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                grid.removePath();
-                EuclideanGraph euclideanGraph = new EuclideanGraph(grid);
-                Astar astar = new Astar(euclideanGraph, new EuclideanDistance(), new NodeData(startNodeX,startNodeY), new NodeData(goalNodeX,goalNodeY));
-                List<AStarNode> solve = astar.solve();
-                grid.setPath(solve);
+                    grid.removePath();
+                    grid.removeVisited();
+                    EuclideanGraph euclideanGraph = new EuclideanGraph(grid);
+                    Astar astar = new Astar(euclideanGraph, new EuclideanDistance(), new NodeData(START_NODE_X, START_NODE_Y), new NodeData(GOAL_NODE_X, GOAL_NODE_Y));
+                    AstarResult result = astar.solve();
+                    grid.setPath(result.getPath());
+                    if (SHOW_EXPLORED_NODES) {
+                        grid.setVisitedNodes(result.getVisitedNodes());
+                    }
             });
 
         } catch (
@@ -62,8 +69,8 @@ public class Main extends Application {
     }
 
     private void makeGridPaintable(Grid grid, MouseGestures mg) {
-        for (int column = 0; column < columns; column++) {
-            for (int row = 0; row < rows; row++) {
+        for (int column = 0; column < COLUMNS; column++) {
+            for (int row = 0; row < ROWS; row++) {
                 Cell cell = grid.getCell(column, row);
                 mg.makePaintable(cell);
             }

@@ -12,6 +12,10 @@ public class Astar {
     private final NodeData start;
     private final NodeData goal;
 
+    private Queue<AStarNode> unexploredNodes = new PriorityQueue<>();
+    private List<AStarNode> exploredNodes = new ArrayList<>();
+    private AstarResult result = new AstarResult();
+
     public Astar (EuclideanGraph graph, DistanceHeuristic<AStarNode> heuristic, NodeData startNode, NodeData goalNode) {
         this.graph = graph;
         this.heuristic = heuristic;
@@ -19,10 +23,7 @@ public class Astar {
         this.goal = goalNode;
     }
 
-    public List<AStarNode> solve() {
-        List<AStarNode> path = Collections.emptyList();
-        Queue<AStarNode> unexploredNodes = new PriorityQueue<>();
-        List<AStarNode> exploredNodes = new ArrayList<>();
+    public AstarResult solve() {
         AStarNode startNode = graph.getNodeAtPosition(start.getXCoordinate(), start.getYCoordinate());
         AStarNode goalNode = graph.getNodeAtPosition(goal.getXCoordinate(), goal.getYCoordinate());
         startNode.setIncrementalCost(0);
@@ -31,7 +32,7 @@ public class Astar {
         while (!unexploredNodes.isEmpty()) {
             AStarNode current = unexploredNodes.poll();
             if (current == goalNode) {
-                return reconstructPath(current);
+                result = reconstructPath(current);
             }
             for (AStarNode neighbor : current.getValidNeighbors()) {
                 double successorCost = current.getIncrementalCost() + GraphHelper.getCostToNeighborNode(current, neighbor);
@@ -49,15 +50,18 @@ public class Astar {
             }
             exploredNodes.add(current);
         }
-        return path;
+        return result;
     }
 
-    private List<AStarNode> reconstructPath(AStarNode node) {
+    private AstarResult reconstructPath(AStarNode node) {
         List<AStarNode> path = new ArrayList<>();
         while (node.getParent() != null) {
             path.add(node);
             node = node.getParent();
         }
-        return path;
+        result.setPath(path);
+        result.setVisitedNodes(new ArrayList<>(exploredNodes));
+        return result;
     }
+
 }

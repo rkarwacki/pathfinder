@@ -95,4 +95,12 @@ public class Cell extends StackPane {
     public void unsetAsPathPart() {
         getStyleClass().remove("cell-path");
     }
+
+    public void setAsVisitedNode() {
+        getStyleClass().add("cell-visited");
+    }
+
+    public void unsetAsVisitedNode() {
+        getStyleClass().remove("cell-visited");
+    }
 }
