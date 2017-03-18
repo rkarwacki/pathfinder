@@ -32,7 +32,7 @@ public class Astar {
         while (!unexploredNodes.isEmpty()) {
             AStarNode current = unexploredNodes.poll();
             if (current == goalNode) {
-                result = reconstructPath(current);
+                return reconstructPath(current);
             }
             for (AStarNode neighbor : current.getValidNeighbors()) {
                 double successorCost = current.getIncrementalCost() + GraphHelper.getCostToNeighborNode(current, neighbor);

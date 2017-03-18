@@ -6,13 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import main.solver.AStarNode;
+import main.solver.DistanceHeuristic;
 import main.solver.impl.*;
 import main.ui.Cell;
 import main.ui.Grid;
 import main.ui.MouseGestures;
-
-import java.util.List;
 
 public class Main extends Application {
 
@@ -49,12 +47,12 @@ public class Main extends Application {
             scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
-
+            DistanceHeuristic distanceHeuristic = new EuclideanDistance();
             button.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                     grid.removePath();
                     grid.removeVisited();
                     EuclideanGraph euclideanGraph = new EuclideanGraph(grid);
-                    Astar astar = new Astar(euclideanGraph, new EuclideanDistance(), new NodeData(START_NODE_X, START_NODE_Y), new NodeData(GOAL_NODE_X, GOAL_NODE_Y));
+                    Astar astar = new Astar(euclideanGraph, distanceHeuristic, new NodeData(START_NODE_X, START_NODE_Y), new NodeData(GOAL_NODE_X, GOAL_NODE_Y));
                     AstarResult result = astar.solve();
                     grid.setPath(result.getPath());
                     if (SHOW_EXPLORED_NODES) {

@@ -29,8 +29,7 @@ public class Grid extends Pane {
 
     private void createGrid(int columns, int rows) {
         for (int i = 0; i < columns; i++) {
-            ArrayList<Cell> cellList = new ArrayList<>();
-            cells.add(cellList);
+            cells.add(new ArrayList<>());
             for (int j = 0; j < rows; j++) {
                 addCellToGridAndInterface(new Cell(i,j));
             }
@@ -38,6 +37,7 @@ public class Grid extends Pane {
     }
 
     public void addCellToGridAndInterface(Cell cell) {
+        if (Math.random() > 0.60 ) cell.highlight();
         int column = cell.getColumn();
         int row = cell.getRow();
         cells.get(column).add(row, cell);

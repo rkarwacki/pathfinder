@@ -6,6 +6,7 @@ import main.solver.State;
 import main.ui.Cell;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparable<AStarNode> {
@@ -75,7 +76,24 @@ public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparab
     public List<AStarNode> getValidNeighbors() {
         return neighbors.stream()
                 .filter(node -> !node.getState().equals(State.BLOCKED))
+                .filter(this::neighborReachable)
                 .collect(Collectors.toList());
+    }
+
+    private boolean neighborReachable(AStarNode neighbor) {
+        if (this.getYCoordinate().equals(neighbor.getYCoordinate()) || this.getXCoordinate().equals(neighbor.getXCoordinate())) {
+            return true;
+        } else {
+            boolean isUpperNeighbor = this.getYCoordinate() < neighbor.getYCoordinate();
+            boolean isRightNeighbor = this.getXCoordinate() < neighbor.getXCoordinate();
+            Optional<AStarNode> yNeighbor = neighbors.stream()
+                    .filter(node -> node.getYCoordinate().equals(isUpperNeighbor ? this.getYCoordinate() + 1 : this.getYCoordinate() - 1))
+                    .findFirst();
+            Optional<AStarNode> xNeighbor = neighbors.stream()
+                    .filter(node -> node.getYCoordinate().equals(isRightNeighbor ? this.getXCoordinate() + 1 : this.getXCoordinate() - 1))
+                    .findFirst();
+            return !(!xNeighbor.isPresent() || !yNeighbor.isPresent()) && !(xNeighbor.get().getState().equals(State.BLOCKED) || yNeighbor.get().getState().equals(State.BLOCKED));
+        }
     }
 
     public State getState() {
