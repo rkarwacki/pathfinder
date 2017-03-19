@@ -1,6 +1,7 @@
 package main.solver.impl;
 
 import main.solver.AStarNode;
+import main.solver.neighborfinding.NeighborFindingStrategy;
 import main.ui.Cell;
 import main.ui.Grid;
 
@@ -12,27 +13,27 @@ public class EuclideanGraph {
 
     private final int xSize;
     private final int ySize;
-    private final List<List<AStarNodeImpl>> nodes;
+    private final List<List<AStarNode>> nodes;
 
-    public EuclideanGraph(List<List<AStarNodeImpl>> nodes){
+    public EuclideanGraph(List<List<AStarNode>> nodes, NeighborFindingStrategy<AStarNode> nodeNeighborFindingStrategy){
         this.xSize = nodes.size();
         this.ySize = nodes.get(0).size();
         this.nodes = nodes;
         setNodesNeighbors();
     }
 
-    public EuclideanGraph(Grid grid) {
+    public EuclideanGraph(Grid grid, NeighborFindingStrategy<AStarNode> nodeNeighborFindingStrategy) {
         nodes = new ArrayList<>();
         this.xSize = grid.getColumns();
         this.ySize = grid.getRows();
-        createGraph(grid);
+        createGraph(grid, nodeNeighborFindingStrategy);
         setNodesNeighbors();
     }
 
     private void setNodesNeighbors() {
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                AStarNodeImpl currentNode = getNodeAtPosition(i, j);
+                AStarNode currentNode = getNodeAtPosition(i, j);
                 currentNode.setNeighbors(findNodeNeighbors(i, j));
             }
         }
@@ -58,21 +59,21 @@ public class EuclideanGraph {
         return !(k == 0 && l == 0);
     }
 
-    private void createGraph(Grid grid) {
+    private void createGraph(Grid grid, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
         List<List<Cell>> cells = grid.getCells();
         for (int i = 0; i < xSize; i++) {
             nodes.add(i, new ArrayList<>());
             for (int j = 0; j < ySize; j++) {
-                nodes.get(i).add(j, new AStarNodeImpl(cells.get(i).get(j)));
+                nodes.get(i).add(j, new AStarNodeImpl(cells.get(i).get(j), neighborFindingStrategy));
             }
         }
     }
 
-    public AStarNodeImpl getNodeAtPosition(int x, int y) {
+    public AStarNode getNodeAtPosition(int x, int y) {
         return nodes.get(x).get(y);
     }
 
-    public List<AStarNodeImpl> getAllNodes() {
+    public List<AStarNode> getAllNodes() {
         return nodes.stream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());

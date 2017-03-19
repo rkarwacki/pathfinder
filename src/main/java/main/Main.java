@@ -3,28 +3,33 @@ package main;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import main.solver.DistanceHeuristic;
+import main.solver.distanceheuristic.DistanceHeuristic;
+import main.solver.distanceheuristic.impl.EuclideanDistance;
+import main.solver.distanceheuristic.impl.ManhattanDistance;
 import main.solver.impl.*;
+import main.solver.neighborfinding.impl.CornerCuttingIfParallelOpenStrategy;
 import main.ui.Cell;
 import main.ui.Grid;
 import main.ui.MouseGestures;
 
 public class Main extends Application {
 
-    boolean showHoverCursor = true;
+    private boolean showHoverCursor = true;
 
-    private static final int COLUMNS = 100;
-    private static final int ROWS = 100;
-    private static final double WINDOW_WIDTH = 900;
-    private static final double WINDOW_HEIGHT = 900;
+    private static final int COLUMNS = 60;
+    private static final int ROWS = 60;
+    private static final double WINDOW_WIDTH = 600;
+    private static final double WINDOW_HEIGHT = 600;
 
-    private static final int START_NODE_X = 23;
-    private static final int START_NODE_Y = 54;
-    private static final int GOAL_NODE_X = 83;
-    private static final int GOAL_NODE_Y = 87;
+    private static final int START_NODE_X = 2;
+    private static final int START_NODE_Y = 2;
+    private static final int GOAL_NODE_X = 40;
+    private static final int GOAL_NODE_Y = 40;
 
     private static final boolean SHOW_EXPLORED_NODES = true;
 
@@ -36,22 +41,27 @@ public class Main extends Application {
         try {
             Button button = new Button();
             button.setText("start");
+            CheckBox checkBox = new CheckBox("s");
             grid = new Grid(COLUMNS, ROWS, WINDOW_WIDTH, WINDOW_HEIGHT);
             makeGridPaintable(grid, mg);
-            StackPane root = new StackPane();
-            root.getChildren().addAll(grid);
-            root.getChildren().addAll(button);
+            BorderPane root = new BorderPane();
+            root.setCenter(grid);
+            root.setTop(button);
+            root.setBottom(checkBox);
             grid.getCell(START_NODE_X, START_NODE_Y).setAsStart();
             grid.getCell(GOAL_NODE_X, GOAL_NODE_Y).setAsGoal();
             Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
-            DistanceHeuristic distanceHeuristic = new EuclideanDistance();
             button.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    grid.removePath();
-                    grid.removeVisited();
-                    EuclideanGraph euclideanGraph = new EuclideanGraph(grid);
+                grid.removePath();
+                grid.removeVisited();
+                DistanceHeuristic distanceHeuristic;
+                if (checkBox.isSelected())
+                distanceHeuristic = new ManhattanDistance();
+                else distanceHeuristic = new EuclideanDistance();
+                EuclideanGraph euclideanGraph = new EuclideanGraph(grid, new CornerCuttingIfParallelOpenStrategy());
                     Astar astar = new Astar(euclideanGraph, distanceHeuristic, new NodeData(START_NODE_X, START_NODE_Y), new NodeData(GOAL_NODE_X, GOAL_NODE_Y));
                     AstarResult result = astar.solve();
                     grid.setPath(result.getPath());

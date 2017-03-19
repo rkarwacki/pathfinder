@@ -2,6 +2,7 @@ package main.ui;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 public class MouseGestures {
@@ -15,7 +16,6 @@ public class MouseGestures {
     public void makePaintable(Node node) {
         if (showHoverCursor) {
             node.hoverProperty().addListener((observable, oldValue, newValue) -> {
-//                System.out.println( observable + ": " + newValue);
                 if(newValue) {
                     ((Cell) node).hoverHighlight();
                 } else {

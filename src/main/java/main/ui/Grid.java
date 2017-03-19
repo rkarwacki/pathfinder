@@ -1,5 +1,7 @@
 package main.ui;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import main.solver.AStarNode;
 import main.solver.impl.AStarNodeImpl;
@@ -37,7 +39,6 @@ public class Grid extends Pane {
     }
 
     public void addCellToGridAndInterface(Cell cell) {
-        if (Math.random() > 0.60 ) cell.highlight();
         int column = cell.getColumn();
         int row = cell.getRow();
         cells.get(column).add(row, cell);

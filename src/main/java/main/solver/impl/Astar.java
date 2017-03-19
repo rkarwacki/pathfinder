@@ -1,7 +1,7 @@
 package main.solver.impl;
 
 import main.solver.AStarNode;
-import main.solver.DistanceHeuristic;
+import main.solver.distanceheuristic.DistanceHeuristic;
 
 import java.util.*;
 

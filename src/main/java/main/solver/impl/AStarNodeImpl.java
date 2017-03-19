@@ -1,15 +1,13 @@
 package main.solver.impl;
 
 import main.solver.AStarNode;
-import main.solver.NodeNeighborhoodAware;
+import main.solver.neighborfinding.NeighborFindingStrategy;
 import main.solver.State;
 import main.ui.Cell;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparable<AStarNode> {
+public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
 
     private final int x;
     private final int y;
@@ -18,20 +16,22 @@ public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparab
     private double incrementalCost;
     private double heuristicCost;
     private AStarNode parentNode;
+    private NeighborFindingStrategy<AStarNode> neighborFindingStrategy;
 
     public void setParentNode(AStarNode parentNode) {
         this.parentNode = parentNode;
     }
 
-    public AStarNodeImpl(Cell cell) {
+    public AStarNodeImpl(Cell cell, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
         this(cell.getColumn(), cell.getRow(),
-                getState(cell));
+                getState(cell), neighborFindingStrategy);
     }
 
-    public AStarNodeImpl(int x, int y, State state) {
+    public AStarNodeImpl(int x, int y, State state, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
         this.x = x;
         this.y = y;
         this.state = state;
+        this.neighborFindingStrategy = neighborFindingStrategy;
     }
 
     private static State getState(Cell cell) {
@@ -73,27 +73,13 @@ public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparab
     }
 
     @Override
-    public List<AStarNode> getValidNeighbors() {
-        return neighbors.stream()
-                .filter(node -> !node.getState().equals(State.BLOCKED))
-                .filter(this::neighborReachable)
-                .collect(Collectors.toList());
+    public List<AStarNode> getNeighbors() {
+        return neighbors;
     }
 
-    private boolean neighborReachable(AStarNode neighbor) {
-        if (this.getYCoordinate().equals(neighbor.getYCoordinate()) || this.getXCoordinate().equals(neighbor.getXCoordinate())) {
-            return true;
-        } else {
-            boolean isUpperNeighbor = this.getYCoordinate() < neighbor.getYCoordinate();
-            boolean isRightNeighbor = this.getXCoordinate() < neighbor.getXCoordinate();
-            Optional<AStarNode> yNeighbor = neighbors.stream()
-                    .filter(node -> node.getYCoordinate().equals(isUpperNeighbor ? this.getYCoordinate() + 1 : this.getYCoordinate() - 1))
-                    .findFirst();
-            Optional<AStarNode> xNeighbor = neighbors.stream()
-                    .filter(node -> node.getYCoordinate().equals(isRightNeighbor ? this.getXCoordinate() + 1 : this.getXCoordinate() - 1))
-                    .findFirst();
-            return !(!xNeighbor.isPresent() || !yNeighbor.isPresent()) && !(xNeighbor.get().getState().equals(State.BLOCKED) || yNeighbor.get().getState().equals(State.BLOCKED));
-        }
+    @Override
+    public List<AStarNode> getValidNeighbors() {
+        return neighborFindingStrategy.getNeighbors(this);
     }
 
     public State getState() {
@@ -119,5 +105,33 @@ public class AStarNodeImpl implements AStarNode, NodeNeighborhoodAware, Comparab
         } else if (this.getTotalCost() < o.getTotalCost()) {
             return -1;
         } else return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AStarNodeImpl aStarNode = (AStarNodeImpl) o;
+
+        return x == aStarNode.x && y == aStarNode.y && state == aStarNode.state;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AStarNodeImpl{" +
+                "x=" + x +
+                ", y=" + y +
+                ", state=" + state +
+                '}';
     }
 }
