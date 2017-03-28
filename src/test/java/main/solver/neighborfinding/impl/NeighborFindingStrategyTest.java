@@ -1,8 +1,8 @@
 package main.solver.neighborfinding.impl;
 
-import main.solver.AStarNode;
-import main.solver.State;
-import main.solver.impl.AStarNodeImpl;
+import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.NodeState;
+import main.solver.datastructures.impl.AStarNodeImpl;
 import main.solver.neighborfinding.NeighborFindingStrategy;
 
 import java.util.Arrays;
@@ -23,8 +23,8 @@ public class NeighborFindingStrategyTest {
     protected List<AStarNode> cornersOpenNeighbors;
     protected List<AStarNode> cornersBlockedNeighbors;
 
-    protected State blocked = State.BLOCKED;
-    protected State open = State.OPEN;
+    protected NodeState blocked = NodeState.BLOCKED;
+    protected NodeState open = NodeState.OPEN;
 
     public NeighborFindingStrategyTest(NeighborFindingStrategy<AStarNode> strategy) {
         this.strategy = strategy;
@@ -32,7 +32,7 @@ public class NeighborFindingStrategyTest {
     }
 
     private void createNeighborsLists(NeighborFindingStrategy<AStarNode> strategy) {
-        rootNode = new AStarNodeImpl(2, 2, State.OPEN, strategy);
+        rootNode = new AStarNodeImpl(2, 2, NodeState.OPEN, strategy);
 
         cornersOpen = createCorners(open);
         cornersBlocked = createCorners(blocked);
@@ -45,7 +45,7 @@ public class NeighborFindingStrategyTest {
         cornersBlockedNeighbors = Stream.concat(cornersBlocked.stream(), parallelOpen.stream()).collect(Collectors.toList());
     }
 
-    private List<AStarNode> createParallel(State state) {
+    private List<AStarNode> createParallel(NodeState state) {
         return Arrays.asList(
                 new AStarNodeImpl(1, 2, state, strategy),
                 new AStarNodeImpl(2, 1, state, strategy),
@@ -54,7 +54,7 @@ public class NeighborFindingStrategyTest {
         );
     }
 
-    private List<AStarNode> createCorners(State state) {
+    private List<AStarNode> createCorners(NodeState state) {
         return Arrays.asList(
                 new AStarNodeImpl(1, 1, state, strategy),
                 new AStarNodeImpl(1, 3, state, strategy),

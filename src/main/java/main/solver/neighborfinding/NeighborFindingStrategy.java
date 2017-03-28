@@ -1,6 +1,6 @@
 package main.solver.neighborfinding;
 
-import main.solver.NodeNeighborhoodAware;
+import main.solver.datastructures.NodeNeighborhoodAware;
 
 import java.util.List;
 

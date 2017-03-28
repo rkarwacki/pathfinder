@@ -1,4 +1,4 @@
-package main.solver;
+package main.solver.datastructures;
 
 import java.util.List;
 

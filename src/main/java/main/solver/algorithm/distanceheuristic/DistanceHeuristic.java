@@ -1,6 +1,6 @@
-package main.solver.distanceheuristic;
+package main.solver.algorithm.distanceheuristic;
 
-import main.solver.Point;
+import main.solver.datastructures.Point;
 
 @FunctionalInterface
 public interface DistanceHeuristic<T extends Point> {

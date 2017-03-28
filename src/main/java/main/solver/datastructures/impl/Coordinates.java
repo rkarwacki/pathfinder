@@ -1,6 +1,6 @@
-package main.solver.impl;
+package main.solver.datastructures.impl;
 
-import main.solver.Point;
+import main.solver.datastructures.Point;
 
 public class Coordinates implements Point<Integer> {
 

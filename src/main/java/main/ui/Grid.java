@@ -1,10 +1,7 @@
 package main.ui;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import main.solver.AStarNode;
-import main.solver.impl.AStarNodeImpl;
+import main.solver.datastructures.AStarNode;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package main.solver.impl;
+package main.solver.datastructures.impl;
 
-import main.solver.AStarNode;
+import main.solver.datastructures.AStarNode;
 import main.solver.neighborfinding.NeighborFindingStrategy;
 import main.ui.Cell;
 import main.ui.Grid;

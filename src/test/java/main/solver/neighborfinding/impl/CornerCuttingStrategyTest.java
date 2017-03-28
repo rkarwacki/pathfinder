@@ -1,6 +1,6 @@
 package main.solver.neighborfinding.impl;
 
-import main.solver.AStarNode;
+import main.solver.datastructures.AStarNode;
 import org.junit.Test;
 
 import java.util.Collections;

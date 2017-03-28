@@ -1,7 +1,7 @@
-package main.solver.distanceheuristic.impl;
+package main.solver.algorithm.distanceheuristic.impl;
 
-import main.solver.distanceheuristic.DistanceHeuristic;
-import main.solver.Point;
+import main.solver.algorithm.distanceheuristic.DistanceHeuristic;
+import main.solver.datastructures.Point;
 
 public class EuclideanDistance implements DistanceHeuristic<Point<Integer>> {
     @Override

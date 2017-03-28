@@ -1,4 +1,4 @@
-package main.solver;
+package main.solver.datastructures;
 
 public interface Point<T extends Number> {
     T getXCoordinate();

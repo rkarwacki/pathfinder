@@ -1,4 +1,4 @@
-package main.solver;
+package main.solver.datastructures;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface AStarNode extends Point<Integer>, NodeNeighborhoodAware, Compar
 
     void setParentNode(AStarNode current);
 
-    State getState();
+    NodeState getState();
 
     void setNeighbors(List<AStarNode> nodeNeighbors);
 }

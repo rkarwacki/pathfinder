@@ -1,8 +1,8 @@
-package main.solver.impl;
+package main.solver.datastructures.impl;
 
-import main.solver.AStarNode;
+import main.solver.datastructures.AStarNode;
 import main.solver.neighborfinding.NeighborFindingStrategy;
-import main.solver.State;
+import main.solver.datastructures.NodeState;
 import main.ui.Cell;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
 
     private final int x;
     private final int y;
-    private final State state;
+    private final NodeState state;
     private List<AStarNode> neighbors;
     private double incrementalCost;
     private double heuristicCost;
@@ -27,17 +27,17 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
                 getState(cell), neighborFindingStrategy);
     }
 
-    public AStarNodeImpl(int x, int y, State state, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
+    public AStarNodeImpl(int x, int y, NodeState state, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
         this.x = x;
         this.y = y;
         this.state = state;
         this.neighborFindingStrategy = neighborFindingStrategy;
     }
 
-    private static State getState(Cell cell) {
-        State state = State.OPEN;
+    private static NodeState getState(Cell cell) {
+        NodeState state = NodeState.OPEN;
         if (cell.isHighlighted()) {
-            state = State.BLOCKED;
+            state = NodeState.BLOCKED;
         }
         return state;
     }
@@ -82,7 +82,7 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
         return neighborFindingStrategy.getNeighbors(this);
     }
 
-    public State getState() {
+    public NodeState getState() {
         return state;
     }
 

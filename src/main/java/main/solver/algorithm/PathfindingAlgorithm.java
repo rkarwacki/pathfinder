@@ -1,6 +1,7 @@
-package main.solver;
+package main.solver.algorithm;
 
-import main.solver.impl.PathfindingResult;
+import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.impl.PathfindingResult;
 
 public interface PathfindingAlgorithm<T extends AStarNode> {
     PathfindingResult<T> solve();

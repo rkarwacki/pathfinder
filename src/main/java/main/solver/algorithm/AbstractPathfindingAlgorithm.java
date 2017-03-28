@@ -1,13 +1,14 @@
-package main.solver;
+package main.solver.algorithm;
 
-import main.solver.impl.PathfindingResult;
+import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.impl.PathfindingResult;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public abstract class AbstractPathfindingAlgorithm<T extends AStarNode> implements PathfindingAlgorithm<T>  {
+public abstract class AbstractPathfindingAlgorithm<T extends AStarNode> implements PathfindingAlgorithm<T> {
     protected T startNode;
     protected T goalNode;
     protected T currentNode;

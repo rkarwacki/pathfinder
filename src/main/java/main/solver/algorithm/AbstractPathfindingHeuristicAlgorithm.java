@@ -1,8 +1,7 @@
-package main.solver.impl;
+package main.solver.algorithm;
 
-import main.solver.AStarNode;
-import main.solver.AbstractPathfindingAlgorithm;
-import main.solver.distanceheuristic.DistanceHeuristic;
+import main.solver.datastructures.AStarNode;
+import main.solver.algorithm.distanceheuristic.DistanceHeuristic;
 
 public abstract class AbstractPathfindingHeuristicAlgorithm<T extends AStarNode> extends AbstractPathfindingAlgorithm<T> {
 

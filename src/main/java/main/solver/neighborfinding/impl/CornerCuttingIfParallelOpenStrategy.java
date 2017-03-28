@@ -1,8 +1,8 @@
 package main.solver.neighborfinding.impl;
 
-import main.solver.AStarNode;
+import main.solver.datastructures.AStarNode;
 import main.solver.neighborfinding.NeighborFindingStrategy;
-import main.solver.State;
+import main.solver.datastructures.NodeState;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,7 @@ public class CornerCuttingIfParallelOpenStrategy implements NeighborFindingStrat
     public List<AStarNode> getNeighbors(AStarNode node) {
         return node.getNeighbors().stream()
                 .filter(neighbor -> neighborReachable(node, neighbor))
-                .filter(neighbor -> !neighbor.getState().equals(State.BLOCKED))
+                .filter(neighbor -> !neighbor.getState().equals(NodeState.BLOCKED))
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +41,7 @@ public class CornerCuttingIfParallelOpenStrategy implements NeighborFindingStrat
                     .findFirst();
 
             return xNeighbor.isPresent() && yNeighbor.isPresent() &&
-             xNeighbor.get().getState().equals(State.OPEN) && yNeighbor.get().getState().equals(State.OPEN);
+             xNeighbor.get().getState().equals(NodeState.OPEN) && yNeighbor.get().getState().equals(NodeState.OPEN);
         }
     }
 }

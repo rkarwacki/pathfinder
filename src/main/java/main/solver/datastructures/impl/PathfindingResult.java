@@ -1,6 +1,6 @@
-package main.solver.impl;
+package main.solver.datastructures.impl;
 
-import main.solver.AStarNode;
+import main.solver.datastructures.AStarNode;
 
 import java.util.Collections;
 import java.util.List;

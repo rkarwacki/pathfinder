@@ -1,13 +1,13 @@
-package main.solver.impl;
+package main.solver.datastructures.impl;
 
-import main.solver.AStarNode;
-import main.solver.State;
+import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.NodeState;
 
 public class GraphHelper {
     public static double getCostToNeighborNode(AStarNode current, AStarNode neighbor) {
         if (neighbor == null || (current == null)) return 0;
         else {
-            if (neighbor.getState().equals(State.BLOCKED)) {
+            if (neighbor.getState().equals(NodeState.BLOCKED)) {
                 return Integer.MAX_VALUE;
             } else if (current.getXCoordinate().equals(neighbor.getXCoordinate()) || current.getYCoordinate().equals(neighbor.getYCoordinate())) {
                 return 1;
