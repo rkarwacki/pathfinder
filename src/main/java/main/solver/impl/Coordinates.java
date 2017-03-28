@@ -2,12 +2,12 @@ package main.solver.impl;
 
 import main.solver.Point;
 
-public class NodeData implements Point<Integer> {
+public class Coordinates implements Point<Integer> {
 
     private final int x;
     private final int y;
 
-    public NodeData(int xPosition, int yPosition) {
+    public Coordinates(int xPosition, int yPosition) {
         this.x = xPosition;
         this.y = yPosition;
     }

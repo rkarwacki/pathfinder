@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import main.solver.AStarNode;
 import main.solver.distanceheuristic.DistanceHeuristic;
 import main.solver.distanceheuristic.impl.EuclideanDistance;
 import main.solver.distanceheuristic.impl.ManhattanDistance;
@@ -62,8 +62,10 @@ public class Main extends Application {
                 distanceHeuristic = new ManhattanDistance();
                 else distanceHeuristic = new EuclideanDistance();
                 EuclideanGraph euclideanGraph = new EuclideanGraph(grid, new CornerCuttingIfParallelOpenStrategy());
-                    Astar astar = new Astar(euclideanGraph, distanceHeuristic, new NodeData(START_NODE_X, START_NODE_Y), new NodeData(GOAL_NODE_X, GOAL_NODE_Y));
-                    AstarResult result = astar.solve();
+                AStarNode startNode = euclideanGraph.getNodeAtPosition(START_NODE_X, START_NODE_Y);
+                AStarNode goalNode = euclideanGraph.getNodeAtPosition(GOAL_NODE_X, GOAL_NODE_Y);
+                AStarAlgorithm AStarAlgorithm = new AStarAlgorithm(distanceHeuristic, startNode, goalNode);
+                    PathfindingResult result = AStarAlgorithm.solve();
                     grid.setPath(result.getPath());
                     if (SHOW_EXPLORED_NODES) {
                         grid.setVisitedNodes(result.getVisitedNodes());
