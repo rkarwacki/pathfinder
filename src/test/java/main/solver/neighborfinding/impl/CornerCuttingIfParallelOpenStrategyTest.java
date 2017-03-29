@@ -1,7 +1,7 @@
 package main.solver.neighborfinding.impl;
 
 import main.solver.datastructures.AStarNode;
-import main.solver.datastructures.impl.AStarNodeImpl;
+import main.solver.datastructures.impl.HeuristicNodeImpl;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -13,24 +13,24 @@ import static org.junit.Assert.assertEquals;
 public class CornerCuttingIfParallelOpenStrategyTest extends NeighborFindingStrategyTest {
 
     private List<AStarNode> oneCornerAndOneParallelOpen = Arrays.asList(
-            new AStarNodeImpl(1, 1, blocked, strategy),
-            new AStarNodeImpl(1, 2, blocked, strategy),
-            new AStarNodeImpl(1, 3, open, strategy),
-            new AStarNodeImpl(2, 1, blocked, strategy),
-            new AStarNodeImpl(2, 3, open, strategy),
-            new AStarNodeImpl(3, 1, blocked, strategy),
-            new AStarNodeImpl(3, 2, blocked, strategy),
-            new AStarNodeImpl(3, 3, blocked, strategy)
+            new HeuristicNodeImpl(1, 1, blocked, strategy),
+            new HeuristicNodeImpl(1, 2, blocked, strategy),
+            new HeuristicNodeImpl(1, 3, open, strategy),
+            new HeuristicNodeImpl(2, 1, blocked, strategy),
+            new HeuristicNodeImpl(2, 3, open, strategy),
+            new HeuristicNodeImpl(3, 1, blocked, strategy),
+            new HeuristicNodeImpl(3, 2, blocked, strategy),
+            new HeuristicNodeImpl(3, 3, blocked, strategy)
     );
     private List<AStarNode> oneCornerAndTwoParallelOpen = Arrays.asList(
-            new AStarNodeImpl(1, 1, blocked, strategy),
-            new AStarNodeImpl(1, 2, open, strategy),
-            new AStarNodeImpl(1, 3, open, strategy),
-            new AStarNodeImpl(2, 1, blocked, strategy),
-            new AStarNodeImpl(2, 3, open, strategy),
-            new AStarNodeImpl(3, 1, blocked, strategy),
-            new AStarNodeImpl(3, 2, blocked, strategy),
-            new AStarNodeImpl(3, 3, blocked, strategy)
+            new HeuristicNodeImpl(1, 1, blocked, strategy),
+            new HeuristicNodeImpl(1, 2, open, strategy),
+            new HeuristicNodeImpl(1, 3, open, strategy),
+            new HeuristicNodeImpl(2, 1, blocked, strategy),
+            new HeuristicNodeImpl(2, 3, open, strategy),
+            new HeuristicNodeImpl(3, 1, blocked, strategy),
+            new HeuristicNodeImpl(3, 2, blocked, strategy),
+            new HeuristicNodeImpl(3, 3, blocked, strategy)
     );
 
     public CornerCuttingIfParallelOpenStrategyTest() {
@@ -69,7 +69,7 @@ public class CornerCuttingIfParallelOpenStrategyTest extends NeighborFindingStra
     public void whenOneParallelAndOneCornerIsOpen_expectOnlyParallelAsValidNeighbor() {
         rootNode.setNeighbors(oneCornerAndOneParallelOpen);
         List<AStarNode> validNeighbors = rootNode.getValidNeighbors();
-        assertEquals(Collections.singletonList(new AStarNodeImpl(2, 3, open, strategy)), validNeighbors);
+        assertEquals(Collections.singletonList(new HeuristicNodeImpl(2, 3, open, strategy)), validNeighbors);
     }
 
     @Test
@@ -77,9 +77,9 @@ public class CornerCuttingIfParallelOpenStrategyTest extends NeighborFindingStra
         rootNode.setNeighbors(oneCornerAndTwoParallelOpen);
         List<AStarNode> validNeighbors = rootNode.getValidNeighbors();
         assertEquals(Arrays.asList(
-                new AStarNodeImpl(1, 2, open, strategy),
-                new AStarNodeImpl(1, 3, open, strategy),
-                new AStarNodeImpl(2, 3, open, strategy)
+                new HeuristicNodeImpl(1, 2, open, strategy),
+                new HeuristicNodeImpl(1, 3, open, strategy),
+                new HeuristicNodeImpl(2, 3, open, strategy)
         ), validNeighbors);
     }
 

@@ -1,10 +1,11 @@
 package main.solver.datastructures.impl;
 
 import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.GraphOrientedNode;
 import main.solver.datastructures.NodeState;
 
 public class GraphHelper {
-    public static double getCostToNeighborNode(AStarNode current, AStarNode neighbor) {
+    public static double getCostToNeighborNode(GraphOrientedNode current, GraphOrientedNode neighbor) {
         if (neighbor == null || (current == null)) return 0;
         else {
             if (neighbor.getState().equals(NodeState.BLOCKED)) {
@@ -15,7 +16,7 @@ public class GraphHelper {
         }
     }
 
-    public static double getHeuristicCost(AStarNodeImpl start, AStarNodeImpl goal) {
+    public static double getHeuristicCost(HeuristicNodeImpl start, HeuristicNodeImpl goal) {
         return Math.sqrt(Math.pow(start.getXCoordinate() - goal.getXCoordinate(),2) + Math.pow(start.getYCoordinate() - goal.getYCoordinate(),2));
     }
 }

@@ -7,9 +7,9 @@ import main.solver.datastructures.impl.GraphHelper;
 
 public class AStarAlgorithm extends AbstractPathfindingHeuristicAlgorithm<AStarNode> {
 
-    private DistanceHeuristic<AStarNode> heuristic;
+    private DistanceHeuristic heuristic;
 
-    public AStarAlgorithm(DistanceHeuristic<AStarNode> heuristic, AStarNode start, AStarNode goal) {
+    public AStarAlgorithm(DistanceHeuristic heuristic, AStarNode start, AStarNode goal) {
         super(start, goal);
         setHeuristic(heuristic);
         startNode.setIncrementalCost(0);
@@ -42,7 +42,7 @@ public class AStarAlgorithm extends AbstractPathfindingHeuristicAlgorithm<AStarN
     }
 
     @Override
-    protected void setHeuristic(DistanceHeuristic<AStarNode> heuristic) {
+    protected void setHeuristic(DistanceHeuristic heuristic) {
         this.heuristic = heuristic;
     }
 }

@@ -2,7 +2,7 @@ package main.solver.neighborfinding.impl;
 
 import main.solver.datastructures.AStarNode;
 import main.solver.datastructures.NodeState;
-import main.solver.datastructures.impl.AStarNodeImpl;
+import main.solver.datastructures.impl.HeuristicNodeImpl;
 import main.solver.neighborfinding.NeighborFindingStrategy;
 
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class NeighborFindingStrategyTest {
     }
 
     private void createNeighborsLists(NeighborFindingStrategy<AStarNode> strategy) {
-        rootNode = new AStarNodeImpl(2, 2, NodeState.OPEN, strategy);
+        rootNode = new HeuristicNodeImpl(2, 2, NodeState.OPEN, strategy);
 
         cornersOpen = createCorners(open);
         cornersBlocked = createCorners(blocked);
@@ -47,19 +47,19 @@ public class NeighborFindingStrategyTest {
 
     private List<AStarNode> createParallel(NodeState state) {
         return Arrays.asList(
-                new AStarNodeImpl(1, 2, state, strategy),
-                new AStarNodeImpl(2, 1, state, strategy),
-                new AStarNodeImpl(2, 3, state, strategy),
-                new AStarNodeImpl(3, 2, state, strategy)
+                new HeuristicNodeImpl(1, 2, state, strategy),
+                new HeuristicNodeImpl(2, 1, state, strategy),
+                new HeuristicNodeImpl(2, 3, state, strategy),
+                new HeuristicNodeImpl(3, 2, state, strategy)
         );
     }
 
     private List<AStarNode> createCorners(NodeState state) {
         return Arrays.asList(
-                new AStarNodeImpl(1, 1, state, strategy),
-                new AStarNodeImpl(1, 3, state, strategy),
-                new AStarNodeImpl(3, 1, state, strategy),
-                new AStarNodeImpl(3, 3, state, strategy)
+                new HeuristicNodeImpl(1, 1, state, strategy),
+                new HeuristicNodeImpl(1, 3, state, strategy),
+                new HeuristicNodeImpl(3, 1, state, strategy),
+                new HeuristicNodeImpl(3, 3, state, strategy)
         );
     }
 }

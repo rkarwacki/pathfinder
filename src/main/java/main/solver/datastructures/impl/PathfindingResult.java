@@ -1,11 +1,12 @@
 package main.solver.datastructures.impl;
 
 import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.GraphOrientedNode;
 
 import java.util.Collections;
 import java.util.List;
 
-public class PathfindingResult<T extends AStarNode> {
+public class PathfindingResult<T extends GraphOrientedNode<T>> {
     private List<T> path = Collections.emptyList();
     private List<T> visitedNodes = Collections.emptyList();
 

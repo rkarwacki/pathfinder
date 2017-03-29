@@ -1,6 +1,6 @@
 package main.solver.algorithm;
 
-import main.solver.datastructures.AStarNode;
+import main.solver.datastructures.GraphOrientedNode;
 import main.solver.datastructures.impl.PathfindingResult;
 
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public abstract class AbstractPathfindingAlgorithm<T extends AStarNode> implements PathfindingAlgorithm<T> {
-    protected T startNode;
-    protected T goalNode;
+public abstract class AbstractPathfindingAlgorithm<T extends GraphOrientedNode<T>> implements PathfindingAlgorithm<T> {
+    protected final T startNode;
+    protected final T goalNode;
     protected T currentNode;
     private PathfindingResult<T> result = new PathfindingResult<>();
 
@@ -25,9 +25,9 @@ public abstract class AbstractPathfindingAlgorithm<T extends AStarNode> implemen
     @Override
     public PathfindingResult<T> reconstructPath(T node) {
         List<T> path = new ArrayList<>();
-        while (node.getParent() != null) {
+        while (node.getParentNode() != null) {
             path.add(node);
-            node = (T) node.getParent();
+            node = (T) node.getParentNode();
         }
         result.setPath(path);
         result.setVisitedNodes(new ArrayList<>(exploredNodes));

@@ -22,7 +22,7 @@ public class EuclideanGraph {
         setNodesNeighbors();
     }
 
-    public EuclideanGraph(Grid grid, NeighborFindingStrategy<AStarNode> nodeNeighborFindingStrategy) {
+    public EuclideanGraph(Grid grid, NeighborFindingStrategy nodeNeighborFindingStrategy) {
         nodes = new ArrayList<>();
         this.xSize = grid.getColumns();
         this.ySize = grid.getRows();
@@ -64,7 +64,7 @@ public class EuclideanGraph {
         for (int i = 0; i < xSize; i++) {
             nodes.add(i, new ArrayList<>());
             for (int j = 0; j < ySize; j++) {
-                nodes.get(i).add(j, new AStarNodeImpl(cells.get(i).get(j), neighborFindingStrategy));
+                nodes.get(i).add(j, new HeuristicNodeImpl(cells.get(i).get(j), neighborFindingStrategy));
             }
         }
     }

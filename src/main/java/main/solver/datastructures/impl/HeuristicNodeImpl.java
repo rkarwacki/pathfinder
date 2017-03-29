@@ -7,7 +7,7 @@ import main.ui.Cell;
 
 import java.util.List;
 
-public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
+public class HeuristicNodeImpl implements AStarNode, Comparable<AStarNode> {
 
     private final int x;
     private final int y;
@@ -22,12 +22,12 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
         this.parentNode = parentNode;
     }
 
-    public AStarNodeImpl(Cell cell, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
+    public HeuristicNodeImpl(Cell cell, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
         this(cell.getColumn(), cell.getRow(),
                 getState(cell), neighborFindingStrategy);
     }
 
-    public AStarNodeImpl(int x, int y, NodeState state, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
+    public HeuristicNodeImpl(int x, int y, NodeState state, NeighborFindingStrategy<AStarNode> neighborFindingStrategy) {
         this.x = x;
         this.y = y;
         this.state = state;
@@ -68,7 +68,7 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
     }
 
     @Override
-    public AStarNode getParent() {
+    public AStarNode getParentNode() {
         return parentNode;
     }
 
@@ -112,7 +112,7 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AStarNodeImpl aStarNode = (AStarNodeImpl) o;
+        HeuristicNodeImpl aStarNode = (HeuristicNodeImpl) o;
 
         return x == aStarNode.x && y == aStarNode.y && state == aStarNode.state;
 
@@ -128,7 +128,7 @@ public class AStarNodeImpl implements AStarNode, Comparable<AStarNode> {
 
     @Override
     public String toString() {
-        return "AStarNodeImpl{" +
+        return "HeuristicNodeImpl{" +
                 "x=" + x +
                 ", y=" + y +
                 ", state=" + state +

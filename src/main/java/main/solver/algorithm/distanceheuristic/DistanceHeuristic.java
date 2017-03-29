@@ -1,8 +1,7 @@
 package main.solver.algorithm.distanceheuristic;
 
-import main.solver.datastructures.Point;
+import main.solver.datastructures.AStarNode;
 
-@FunctionalInterface
-public interface DistanceHeuristic<T extends Point> {
-    double getDistance(T start, T goal);
+public interface DistanceHeuristic {
+    double getDistance(AStarNode start, AStarNode goal);
 }
